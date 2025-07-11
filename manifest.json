@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "RetailerShield",
+  "version": "1.0",
+  "description": "Scan Gmail for phishing emails",
+  "permissions": [
+    "scripting",
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://mail.google.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+
+}
