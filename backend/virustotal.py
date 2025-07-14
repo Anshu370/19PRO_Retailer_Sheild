@@ -38,30 +38,5 @@ async def scan_url_virustotal(url: str) -> dict:
     except Exception as e:
         return {"error": str(e), "url": url}
 
-async def scan_file_virustotal(file_bytes, filename):
-    try:
-        files = {
-            'file': (filename, file_bytes)
-        }
-
-        response = requests.post(
-            'https://www.virustotal.com/api/v3/files',
-            headers={
-                'x-apikey': VIRUSTOTAL_API_KEY
-            },
-            files=files
-        )
-
-        if response.status_code == 200:
-            return {"status": "success", "scan_result": response.json()}
-        else:
-            return {
-                "status": "error",
-                "message": f"Failed to upload: {response.status_code}",
-                "details": response.text
-            }
-
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
     
    
