@@ -1,9 +1,9 @@
 from fastapi import APIRouter, UploadFile, File
 from pydantic import BaseModel
 from typing import List, Optional
-from utils import scan_and_parse
+from utils import scan_and_parse, compute_security_score
 import pandas as pd
-
+from nlp_detector import predict_phishing
 
 router = APIRouter()
 
@@ -25,19 +25,26 @@ class EmailData(BaseModel):
 
 @router.post("/api/process_email")
 async def process_email(email_data: EmailData):
-
     print("📩 Received email:", email_data.subject)
 
-    records = [await scan_and_parse(link) for link in email_data.links]
-    records += [await scan_and_parse(att.url) for att in email_data.attachments]
+    # VirusTotal Scan
+    vt_records = [await scan_and_parse(link) for link in email_data.links]
+    vt_records += [await scan_and_parse(att.url) for att in email_data.attachments]
 
-    # Create and print the DataFrame
-    df = pd.DataFrame(records)
     print("\n🛡️ VirusTotal Scan Summary:\n")
+    df = pd.DataFrame(vt_records)
     print(df)
 
+    # NLP Phishing Prediction
+    nlp_result = predict_phishing(email_data.subject, email_data.body)
+
+    # Compute total security score (combined VT + NLP)
+    security_score = compute_security_score(vt_records, nlp_result)
+
     return {
-    "subject": email_data.subject,
-    "sender": f"{email_data.senderName} <{email_data.senderEmail}>",
-    "virustotal": records
+        "subject": email_data.subject,
+        "sender": f"{email_data.senderName} <{email_data.senderEmail}>",
+        "virustotal": vt_records,
+        "nlp_prediction": nlp_result,
+        "score": security_score
     }

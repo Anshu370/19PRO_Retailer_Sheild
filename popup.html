@@ -1,49 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RetailerShield</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding: 16px;
-      width: 300px;
-      background: #f4f6f8;
+      width: 350px;
+      background-color: #f9f9f9;
+      color: #333;
     }
 
     h2 {
-      margin-top: 0;
-      color: #1a73e8;
+      color: #1976d2;
+      margin-bottom: 8px;
     }
 
     button {
-      background-color: #1a73e8;
+      background-color: #1976d2;
       color: white;
-      padding: 8px 12px;
       border: none;
-      border-radius: 4px;
+      padding: 10px 16px;
+      border-radius: 5px;
       cursor: pointer;
-      margin-top: 10px;
       font-size: 14px;
     }
 
     button:hover {
-      background-color: #155ab6;
+      background-color: #125ca1;
     }
 
     #status {
+      margin-top: 10px;
+      font-style: italic;
+      color: #666;
+    }
+
+    #security-score {
+      margin-top: 12px;
+    }
+
+    #scan-result {
       margin-top: 12px;
       font-size: 14px;
-      color: #333;
+    }
+
+    hr {
+      margin: 15px 0;
+      border: none;
+      border-top: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
-  <h2>RetailerShield</h2>
-  <p>Protect your inbox from phishing and fraud.</p>
-  <p>Click below to scan the currently opened email:</p>
+  <h2>🛡️ RetailerShield</h2>
+  <p>Protect your inbox from phishing and fraud with AI-powered scanning.</p>
 
-  <button id="manual-scan">Scan Current Email</button>
-  <div id="status">Waiting for action...</div>
+  <button id="manual-scan">🔍 Scan Current Email</button>
+  <div id="status">Waiting for scan...</div>
+
+  <hr />
+
+  <div id="security-score"></div>
+  <div id="scan-result"></div>
 
   <script src="popup.js"></script>
 </body>

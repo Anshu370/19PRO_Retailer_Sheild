@@ -57,7 +57,20 @@ function getEmailData() {
     .then(res => res.json())
     .then(data => {
       console.log("✅ Backend response:", data);
-      alert(`RetailerShield Scan Complete\nSubject: ${data.subject}`);
+      
+      chrome.runtime.sendMessage({
+        type: "SAVE_SCAN_RESULT",
+        payload: {
+          subject: data.subject,
+          sender: data.sender,
+          vtResults: data.virustotal,
+          score: data.total_score || data.score || {}
+        }
+      });
+    })
+    .catch(err => {
+      console.error("❌ Fetch error:", err);
+      // alert(`RetailerShield Scan Complete\nSubject: ${data.subject}`);
     })
     .catch(err => {
       console.error("❌ Fetch error:", err);
